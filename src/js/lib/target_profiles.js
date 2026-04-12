@@ -5,11 +5,12 @@ import { StorageProvider } from "./storage_repository.js";
 
 export async function findTargetProfiles(ctx) {
   try {
-    return await retrieveTargetProfilesFromDB(ctx);
-  } catch (err) {
-    // Firefox private browsing
-    return await retrieveTargetProfilesFromLztext(ctx);
+    const profiles = await retrieveTargetProfilesFromDB(ctx);
+    if (profiles.length > 0) return profiles;
+  } catch (_) {
+    // IndexedDB not available (Firefox private browsing or container isolation)
   }
+  return await retrieveTargetProfilesFromLztext(ctx);
 }
 
 async function retrieveTargetProfilesFromDB(ctx) {
