@@ -20,9 +20,11 @@ This extension shows a menu of switchable roles that you can configure manually.
 ## Development and Distribution Guideline
 
 #### Minimizes required permissions and operates only on AWS Console pages
+
 A browser plug-in goes with security risks. AWS Management Console allows you to manipulate your essential data.
 
-#### Supports only the  latest version of each official browser
+#### Supports only the latest version of each official browser
+
 This extension does not restrict the use of other compatible browsers. The version restrictions are only due to the JavaScript language features used.
 
 ## Install
@@ -37,13 +39,14 @@ Left-click the extension, click "Configure", enter your configuration in the tex
 You can write the configuration in INI format like `~/.aws/config` or `~/.aws/credentials`.
 
 ### Simple Configuration
-The simplest configuration is for multiple **target roles** when you always intend to show the whole list.  **Target roles** can be expressed with a `role_arn` or with both `aws_account_id` and `role_name`.
+
+The simplest configuration is for multiple **target roles** when you always intend to show the whole list. **Target roles** can be expressed with a `role_arn` or with both `aws_account_id` and `role_name`.
 
 #### Optional parameters
 
-* `color` - The RGB hex value (without the prefix '#') for the color of the header bottom border and around the current profile.
-* `region` - Changing the region whenever switching the role if this parameter is specified.
-* `image` - The uri of an image to use on top of any color attribute supplied. The color and image are not mutually exclusive.
+- `color` - The RGB hex value (without the prefix '#') for the color of the header bottom border and around the current profile.
+- `region` - Changing the region whenever switching the role if this parameter is specified.
+- `image` - The uri of an image to use on top of any color attribute supplied. The color and image are not mutually exclusive.
 
 ```
 [profile marketingadmin]
@@ -62,13 +65,14 @@ image = "https://aesr.dev/img/150"
 ```
 
 ### Complex Configuration
+
 More complex configurations involve multiple AWS accounts and/or organizations.
 
 - A profile specified by the `source_profile` of the others is defined as a **base account**.
 
 - If your account is aliased, you specify `aws_account_alias` in **base account**.
 
-- If an `role_name` is specified in a **base account** it will also check for the role that is used to login to AWS. This can be used to select a subset of accounts when you are using an SSO IdP to login to AWS. If a role name starts with *AWSReservedSSO_*, the value should be only the **permission set** name.
+- If an `role_name` is specified in a **base account** it will also check for the role that is used to login to AWS. This can be used to select a subset of accounts when you are using an SSO IdP to login to AWS. If a role name starts with _AWSReservedSSO\__, the value should be only the **permission set** name.
 
 - A **target role** is associated with a **base account** by its `source_profile` specifying the profile name of the base account.
 
@@ -148,14 +152,14 @@ source_profile = Org3-BaseAccount2
 
 If you sign-in a base account, target roles of the other base accounts are excluded.
 
-The 'Show only matching roles' setting is for use with more sophisticated account structures where you're using AWS Organizations with multiple accounts along with AWS Federated Logins via something like Active Directory or Google GSuite.  Common practice is to have a role in the master account that is allowed to assume a role of the same name in other member accounts.  Checking this box means that if you're logged in to the 'Developer' role in the master account, only member accounts with a role_arn ending in 'role/Developer' will be shown.  You won't see roles that your current role can't actually assume.
+The 'Show only matching roles' setting is for use with more sophisticated account structures where you're using AWS Organizations with multiple accounts along with AWS Federated Logins via something like Active Directory or Google GSuite. Common practice is to have a role in the master account that is allowed to assume a role of the same name in other member accounts. Checking this box means that if you're logged in to the 'Developer' role in the master account, only member accounts with a role_arn ending in 'role/Developer' will be shown. You won't see roles that your current role can't actually assume.
 
 ## Settings
 
 - **Hide account id** hides the account_id for each profile.
 - **Show only matching roles** filters to only show profiles with roles that match your role in your master account.
 - **Automatic tab grouping for multi-session (Experimental, Supporters only)** automatically organizes tabs from the same AWS Management Console multi-session into tab groups. The tab group name will be the corresponding profile name. When a tab group is removed, the corresponding session will be automatically signed out.
-- **Sign-in endpoint in current region (Experimental, Supporters only)** instead of *signin.aws.amazon.com* when you browse a non-global page in AWS Management Console. For those working geographically far from Virginia, the switch role may be a little faster.
+- **Sign-in endpoint in current region (Experimental, Supporters only)** instead of _signin.aws.amazon.com_ when you browse a non-global page in AWS Management Console. For those working geographically far from Virginia, the switch role may be a little faster.
 - ~~**Automatically assume last assumed role (Experimental)** automatically assumes last assumed role on the next sign-in if did not back to the base account and signed out.~~ **temporarily disabled**
 - **Configuration storage** specifies which storage to save to. 'Sync' can automatically share it between browsers with your account but cannot store many profiles. 'Local' is the exact opposite of 'Sync.'
 - **Visual mode** specifies whether light mode or dark mode is applied to the UI appearance.
@@ -165,16 +169,19 @@ The 'Show only matching roles' setting is for use with more sophisticated accoun
 The popup interface supports keyboard navigation for efficient role switching:
 
 ### Filter Input
+
 - Type to filter roles by name or account ID
 - **Enter** - Select the currently highlighted role and switch to it
 - **Escape** - Clear the filter and close the popup
 
 ### Role Navigation
+
 - **Arrow Down** - Highlight the next visible role in the filtered list
 - **Arrow Up** - Highlight the previous visible role in the filtered list
 - **Enter** - Switch to the currently highlighted role
 
 ### Usage Example
+
 1. Open the extension popup (click the extension icon)
 2. Type part of a role name (e.g., "prod" to filter production roles)
 3. Use **Arrow Down**/**Arrow Up** to navigate through the filtered results
@@ -189,3 +196,14 @@ The popup interface supports keyboard navigation for efficient role switching:
 ![Screen Shot 1](https://github.com/tilfinltd/aws-extend-switch-roles/blob/images/ScreenShot_1.png)
 
 ![Screen Shot 3](https://github.com/tilfinltd/aws-extend-switch-roles/blob/images/ScreenShot_3_960x600.png)
+
+## Building
+
+- Install NodeJs v24.14.1
+- Run `npm install`
+- Run `npm run archive`
+
+This generates the following build artifacts
+
+- `dist/chrome/aesr-chrome-<version>.zip`
+- `dist/firefox/aesr-firefox-<version>.zip`
